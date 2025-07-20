@@ -27,5 +27,5 @@ export const transactionSchema = z
         message: "Recurring interval is required for recurring transactions",
         path: ["recurringInterval"],
       });
-    }  
+    }
   });
