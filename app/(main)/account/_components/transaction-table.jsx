@@ -14,7 +14,6 @@ import {
   Clock,
 } from "lucide-react";
 import { format } from "date-fns";
-import { enUS } from "date-fns/locale";
 import { toast } from "sonner";
 
 import {
@@ -182,11 +181,8 @@ export function TransactionTable({ transactions }) {
   useEffect(() => {
     if (deleted && !deleteLoading) {
       toast.error("Transactions deleted successfully");
-
-      // ✅ Refetch updated list so deleted transactions disappear
-      fetchTransactions();
     }
-  }, [deleted, deleteLoading, fetchTransactions]);
+  }, [deleted, deleteLoading]);
 
   const handleClearFilters = () => {
     setSearchTerm("");
@@ -360,7 +356,7 @@ export function TransactionTable({ transactions }) {
                     />
                   </TableCell>
                   <TableCell>
-                    {format(new Date(transaction.date), "PP", { locale: enUS })}
+                    {format(new Date(transaction.date), "PP")}
                   </TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell className="capitalize">
@@ -407,8 +403,7 @@ export function TransactionTable({ transactions }) {
                               <div>
                                 {format(
                                   new Date(transaction.nextRecurringDate),
-                                  "PPP",
-                                  { locale: enUS }
+                                  "PPP"
                                 )}
                               </div>
                             </div>
