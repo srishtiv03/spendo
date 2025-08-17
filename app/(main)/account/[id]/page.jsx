@@ -3,7 +3,13 @@ import { getAccountWithTransactions } from "@/actions/account";
 import { BarLoader } from "react-spinners";
 import { TransactionTable } from "../_components/transaction-table";
 import { notFound } from "next/navigation";
-import { AccountChart } from "../_components/account-chart";
+import dynamic from "next/dynamic";
+
+// ✅ Dynamic import for chart to avoid SSR crash
+const AccountChart = dynamic(
+  () => import("../_components/account-chart").then(mod => mod.AccountChart),
+  { ssr: false }
+);
 
 export default async function AccountPage({ params }) {
   const accountData = await getAccountWithTransactions(params.id);
