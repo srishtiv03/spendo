@@ -46,21 +46,23 @@ export function AccountChart({ transactions }) {
 
     // Group transactions by date
     const grouped = filtered.reduce((acc, transaction) => {
-      const date = format(new Date(transaction.date), "MMM dd");
-      if (!acc[date]) {
-        acc[date] = { date, income: 0, expense: 0 };
+      const dateKey = format(new Date(transaction.date), "yyyy-MM-dd"); // keep sortable key
+      const displayDate = format(new Date(transaction.date), "MMM dd"); // formatted for chart
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = { dateKey, date: displayDate, income: 0, expense: 0 };
       }
       if (transaction.type === "INCOME") {
-        acc[date].income += transaction.amount;
+        acc[dateKey].income += transaction.amount;
       } else {
-        acc[date].expense += transaction.amount;
+        acc[dateKey].expense += transaction.amount;
       }
       return acc;
     }, {});
 
-    // Convert to array and sort by date
+    // Convert to array and sort by raw dateKey
     return Object.values(grouped).sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
+      (a, b) => new Date(a.dateKey) - new Date(b.dateKey)
     );
   }, [transactions, dateRange]);
 
